@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace brooen_export2{
-    class tex_process{
-        public enum tex_format{
+    class tex_process {
+        public enum tex_format : byte {
             TEXTURE_FORMAT_L8 = 0x02,
             TEXTURE_FORMAT_R5G6B5 = 0x44,
             TEXTURE_FORMAT_A8L8 = 0x4a,
@@ -20,7 +20,20 @@ namespace brooen_export2{
 
 
 
-
+        public static bool IsFormatSupported(tex_format format){
+            switch (format){
+                case tex_format.TEXTURE_FORMAT_A8L8:
+                case tex_format.TEXTURE_FORMAT_X4R4G4B4:
+                case tex_format.TEXTURE_FORMAT_R5G6B5:
+                case tex_format.TEXTURE_FORMAT_A8R8G8B8:
+                case tex_format.TEXTURE_FORMAT_L8:
+                case tex_format.TEXTURE_FORMAT_DXT1:
+                case tex_format.TEXTURE_FORMAT_DXN:
+                case tex_format.TEXTURE_FORMAT_DXT3:
+                case tex_format.TEXTURE_FORMAT_DXT5:
+                    return true;
+                default: return false;
+        }}
         public static int TexelPartsSqrt(tex_format format){ // result * result to get pixels per chunk
             switch (format){
                 case tex_format.TEXTURE_FORMAT_A8L8:
