@@ -56,6 +56,12 @@ namespace brooen_export2{
                 }catch (Exception ex){
                     Console.WriteLine("FAILURE: " + ex.Message + " @ " + file);
             }}
+            foreach (string file in Directory.EnumerateFiles(source, "*.dfont", SearchOption.AllDirectories)){
+                try{dump_texture(file);
+                    Console.WriteLine("SUCCESS: @ " + file);
+                }catch (Exception ex){
+                    Console.WriteLine("FAILURE: " + ex.Message + " @ " + file);
+            }}
         }
 
         //public struct test{
@@ -130,10 +136,10 @@ namespace brooen_export2{
                         byte[] curr_data = texture_data.Skip(current_read_data).Take(next_image_size).ToArray();
                         write_pixels_to_file(curr_data, header, output_name);
                         current_read_data += next_image_size;
+                    }else{ // shrink search thing
+                        if (header.mode == 0x0b) header.height /= 2;
+                        else header.width /= 2;
                     }
-
-                    if (header.mode == 0x0b) header.height /= 2;
-                    else header.width /= 2;
 
                     if (header.width < 16 || header.height < 16 || header.data_length - current_read_data == 0)
                         break;
