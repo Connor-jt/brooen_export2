@@ -122,6 +122,7 @@ namespace brooen_export2{
             // a = width
 
             if (header.mode == 0x0b || header.mode == 0x0a){
+                return; // we dont want mip maps
                 int current_read_data = 0;
                 while (true){
                     int next_image_size = GetTextureDataSize(header.width, header.height, header.format);
