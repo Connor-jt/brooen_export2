@@ -62,6 +62,8 @@ namespace brooen_export2{
                 }catch (Exception ex){
                     Console.WriteLine("FAILURE: " + ex.Message + " @ " + file);
             }}
+            Console.WriteLine("task conpleted, press enter to exit");
+            Console.ReadLine();
         }
 
         //public struct test{
@@ -122,7 +124,6 @@ namespace brooen_export2{
             // a = width
 
             if (header.mode == 0x0b || header.mode == 0x0a){
-                return; // we dont want mip maps
                 int current_read_data = 0;
                 while (true){
                     int next_image_size = GetTextureDataSize(header.width, header.height, header.format);
@@ -137,6 +138,8 @@ namespace brooen_export2{
                         byte[] curr_data = texture_data.Skip(current_read_data).Take(next_image_size).ToArray();
                         write_pixels_to_file(curr_data, header, output_name);
                         current_read_data += next_image_size;
+                        return; // we dont want mip maps, so abort after extracting the first image
+
                     }else{ // shrink search thing
                         if (header.mode == 0x0b) header.height /= 2;
                         else header.width /= 2;
